@@ -42,10 +42,6 @@ public class Item {
     @JoinColumn(name = "seller_id")
     private User seller; // 판매자 아이디
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user; // 판매자 아이디
-
     @OneToMany(mappedBy = "item")
     private List<CartItem> cart_items = new ArrayList<>();
 

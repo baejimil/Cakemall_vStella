@@ -31,7 +31,7 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cart_items = new ArrayList<>();
 
-    @DateTimeFormat(pattern = "cart")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate createDate;
 
     @PrePersist
