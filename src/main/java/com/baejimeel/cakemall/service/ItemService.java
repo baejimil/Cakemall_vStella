@@ -98,6 +98,8 @@ public class ItemService {
 //        itemRepository.deleteById(id);
 //    }
 
+    public void itemDelete(Integer id) { itemRepository.deleteById(id); }
+
     // 상품 검색
     public Page<Item> itemSearchList(String searchKeyword, Pageable pageable) {
 

@@ -30,27 +30,46 @@ public class ItemController {
         return "main";
     }
 
+    @GetMapping("/main")
+    public String mainPage(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
+            // 어드민, 판매자
+            List<Item> items = itemService.allItemView();
+            model.addAttribute("items", items);
+            model.addAttribute("user", principalDetails.getUser());
+
+            return "main";
+        } else {
+            // 일반 유저일 경우
+            List<Item> items = itemService.allItemView();
+            model.addAttribute("items", items);
+            model.addAttribute("user", principalDetails.getUser());
+
+            return "main";
+        }
+    }
+
     // 상품 등록 페이지 (GET)
     @GetMapping("/item/new")
     public String itemSaveForm() {
 
-        return "/seller/itemForm";
+        return "seller/itemForm";
     }
 
     // 상품 등록 (POST)
-    @PostMapping("/item/new/pro")
-    public String itemSave(Item item, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception {
-        if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
-            // 판매자
-            item.setSeller(principalDetails.getUser());
-            itemService.saveItem(item, imgFile);
-
-            return "redirect:/main";
-        } else {
-            // 일반 회원이면 거절 -> main
-            return "redirect:/main";
-        }
-    }
+//    @PostMapping("/item/new/pro")
+//    public String itemSave(Item item, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception {
+//        if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
+//            // 판매자
+//            item.setSeller(principalDetails.getUser());
+//            itemService.saveItem(item, imgFile);
+//
+//            return "redirect:/main";
+//        } else {
+//            // 일반 회원이면 거절 -> main
+//            return "redirect:/main";
+//        }
+//    }
 
     // 상품 수정 페이지 (GET)
     @GetMapping("/item/modify/{id}")
@@ -58,30 +77,30 @@ public class ItemController {
 
         model.addAttribute("item", itemService.itemView(id));
 
-        return "/seller/itemModify";
+        return "seller/itemModify";
     }
 
     // 상품 수정 (POST)
-    @PostMapping("/item/modify/pro/{id}")
-    public String itemModify(Item item, @PathVariable("id") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception{
-
-        if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
-            // 판매자
-            User user = itemService.itemView(id).getSeller();
-
-            if(user.getId() == principalDetails.getUser().getId()) {
-                // 상품을 올린 판매자 id와 현재 로그인 중인 판매자의 id가 같아야 수정 가능
-                itemService.itemModify(item, id, imgFile);
-
-                return "redirect:/main";
-            } else {
-                return "redirect:/main";
-            }
-        } else {
-            // 일반 회원이면 거절 -> main
-            return "redirect:/main";
-        }
-    }
+//    @PostMapping("/item/modify/pro/{id}")
+//    public String itemModify(Item item, @PathVariable("id") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception{
+//
+//        if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
+//            // 판매자
+//            User user = itemService.itemView(id).getSeller();
+//
+//            if(user.getId() == principalDetails.getUser().getId()) {
+//                // 상품을 올린 판매자 id와 현재 로그인 중인 판매자의 id가 같아야 수정 가능
+//                itemService.itemModify(item, id, imgFile);
+//
+//                return "redirect:/main";
+//            } else {
+//                return "redirect:/main";
+//            }
+//        } else {
+//            // 일반 회원이면 거절 -> main
+//            return "redirect:/main";
+//        }
+//    }
 
     // 상품 상세 페이지
     @GetMapping("/item/view/{id}")
@@ -89,16 +108,16 @@ public class ItemController {
 
         model.addAttribute("item", itemService.itemView(id));
 
-        return "/seller/itemView";
+        return "seller/itemView";
     }
 
 
     // 상품 삭제
-//    @GetMapping("/item/delete/{id}")
-//    public String itemDelete(@PathVariable("id") Integer id) {
-//
-//        itemService.itemDelete(id);
-//
-//        return "/main";
-//    }
+    @GetMapping("/item/delete/{id}")
+    public String itemDelete(@PathVariable("id") Integer id) {
+
+        itemService.itemDelete(id);
+
+        return "main";
+    }
 }

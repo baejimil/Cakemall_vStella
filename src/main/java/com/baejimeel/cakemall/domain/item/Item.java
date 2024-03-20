@@ -32,24 +32,18 @@ public class Item {
 
     private int stock; // 재고
 
-//    private boolean isSoldout; // 상품 상태 (판매중 / 품절)
+    private boolean isSoldout; // 상품 상태 (판매중 / 품절)
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id")
-    private User seller; // 판매자 아이디
+    private String imgName;
+
+    private String imgPath;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user; // 판매자 아이디
 
     @OneToMany(mappedBy = "item")
     private List<CartItem> cart_items = new ArrayList<>();
 
-    private String imgName; // 이미지 파일명
-
-    private String imgPath; // 이미지 조회 경로
-
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDate createDate; // 상품 등록 날짜
-
-    @PrePersist // DB에 INSERT 되기 직전에 실행. 즉 DB에 값을 넣으면 자동으로 실행됨
-    public void createDate() {
-        this.createDate = LocalDate.now();
-    }
+    private String photo; // 상품 사진
 }

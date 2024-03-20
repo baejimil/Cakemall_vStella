@@ -28,13 +28,13 @@ public class SecurityConfig{
                         {
                             try {
                                 authorize
-                                        .requestMatchers("/", "/main/**").authenticated();
-//                                        .anyRequest().permitAll()
-//                                        .and()
-//                                        .formLogin()
-//                                        .loginPage("/signin")
-//                                        .loginProcessingUrl("/signin")
-//                                        .defaultSuccessUrl("/member/list");
+                                        .requestMatchers("/main/**").authenticated()
+                                        .anyRequest().permitAll()
+                                        .and()
+                                        .formLogin()
+                                        .loginPage("/signin")
+                                        .loginProcessingUrl("/signin")
+                                        .defaultSuccessUrl("/main");
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
