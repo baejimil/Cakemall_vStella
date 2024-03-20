@@ -38,6 +38,10 @@ public class Item {
 
     private String imgPath;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seller_id")
+    private User seller; // 판매자 아이디
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user; // 판매자 아이디
@@ -45,5 +49,11 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<CartItem> cart_items = new ArrayList<>();
 
-    private String photo; // 상품 사진
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private LocalDate createDate; // 상품 등록 날짜
+
+    @PrePersist // DB에 INSERT 되기 직전에 실행. 즉 DB에 값을 넣으면 자동으로 실행됨
+    public void createDate() {
+        this.createDate = LocalDate.now();
+    }
 }

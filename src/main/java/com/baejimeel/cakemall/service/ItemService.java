@@ -19,7 +19,7 @@ import java.util.UUID;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-//    private final CartService cartService;
+    private final CartService cartService;
 //    private final SaleService saleService;
 
     // 상품 등록
@@ -86,19 +86,17 @@ public class ItemService {
     }
 
     // 상품 삭제
-//    @Transactional
-//    public void itemDelete(Integer id) {
-//        // cartItem 중에 해당 id 를 가진 item 찾기
-//        List<CartItem> items = cartService.findCartItemByItemId(id);
-//
-//        for(CartItem item : items) {
-//            cartService.cartItemDelete(item.getId());
-//        }
-//
-//        itemRepository.deleteById(id);
-//    }
+    @Transactional
+    public void itemDelete(Integer id) {
+        // cartItem 중에 해당 id 를 가진 item 찾기
+        List<CartItem> items = cartService.findCartItemByItemId(id);
 
-    public void itemDelete(Integer id) { itemRepository.deleteById(id); }
+        for(CartItem item : items) {
+            cartService.cartItemDelete(item.getId());
+        }
+
+        itemRepository.deleteById(id);
+    }
 
     // 상품 검색
     public Page<Item> itemSearchList(String searchKeyword, Pageable pageable) {
