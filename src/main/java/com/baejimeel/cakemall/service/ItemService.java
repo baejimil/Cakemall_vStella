@@ -20,7 +20,7 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final CartService cartService;
-//    private final SaleService saleService;
+    private final SaleService saleService;
 
     // 상품 등록
     public void saveItem(Item item, MultipartFile imgFile) throws Exception {
@@ -79,9 +79,9 @@ public class ItemService {
         update.setText(item.getText());
         update.setPrice(item.getPrice());
         update.setStock(item.getStock());
-//        update.setIsSoldout(item.getIsSoldout());
+        update.setIsSoldout(item.getIsSoldout());
         update.setImgName(fileName);
-        update.setImgPath("/files/" + fileName);
+        update.setImgPath("/files/"+fileName);
         itemRepository.save(update);
     }
 
@@ -103,4 +103,5 @@ public class ItemService {
 
         return itemRepository.findByNameContaining(searchKeyword, pageable);
     }
+
 }

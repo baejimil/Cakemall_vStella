@@ -34,7 +34,7 @@ public class CartService {
     public void addCart(User user, Item newItem, int amount){
 
         // 유저 id로 해당 유저 장바구니 찾기
-        Cart cart = cartRepository.findCartById(user.getId());
+        Cart cart = cartRepository.findByUserId(user.getId());
 
         // 장바구니가 존재 안한다면
         if(cart == null){

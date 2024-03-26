@@ -46,7 +46,7 @@ public class ItemController {
     @GetMapping("/main")
     public String mainPage(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
-            // 어드민, 판매자
+            // 판매자
             int sellerId = principalDetails.getUser().getId();
             List<Item> items = itemService.allItemView();
             model.addAttribute("items", items);
@@ -138,7 +138,7 @@ public class ItemController {
     }
 
     // 상품 상세 페이지 - 판매자, 구매자 가능
-    @GetMapping("/item/view/{id}")
+    @GetMapping("/item/view/{itemId}")
     public String ItemView(Model model, @PathVariable("itemId") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
             // 판매자

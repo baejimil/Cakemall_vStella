@@ -1,6 +1,8 @@
 package com.baejimeel.cakemall.domain.item;
 
 import com.baejimeel.cakemall.domain.cartitem.CartItem;
+import com.baejimeel.cakemall.domain.orderItem.OrderItem;
+import com.baejimeel.cakemall.domain.saleItem.SaleItem;
 import com.baejimeel.cakemall.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,31 +21,37 @@ import java.util.List;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String name; // 상품 이름
+    private String name;
 
-    private String text; // 상품에 대한 상세설명
+    private String text; // 물건에 대한 상세설명
 
-    private int price; // 상품 가격
+    private int price; // 가격
 
     private int count; // 판매 개수
 
     private int stock; // 재고
 
-    private boolean isSoldout; // 상품 상태 (판매중 / 품절)
-
-    private String imgName;
-
-    private String imgPath;
+    private int isSoldout; // 상품 상태 (0 : 판매중 / 1 : 품절)
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id")
     private User seller; // 판매자 아이디
 
     @OneToMany(mappedBy = "item")
-    private List<CartItem> cart_items = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "item")
+//    private List<OrderItem> orderItems = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "item")
+//    private List<SaleItem> saleItems = new ArrayList<>();
+
+    private String imgName; // 이미지 파일명
+
+    private String imgPath; // 이미지 조회 경로
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate createDate; // 상품 등록 날짜
@@ -52,4 +60,5 @@ public class Item {
     public void createDate() {
         this.createDate = LocalDate.now();
     }
+
 }

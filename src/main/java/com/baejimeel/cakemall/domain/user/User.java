@@ -2,6 +2,10 @@ package com.baejimeel.cakemall.domain.user;
 
 import com.baejimeel.cakemall.domain.cart.Cart;
 import com.baejimeel.cakemall.domain.item.Item;
+import com.baejimeel.cakemall.domain.order.Order;
+import com.baejimeel.cakemall.domain.orderItem.OrderItem;
+import com.baejimeel.cakemall.domain.sale.Sale;
+import com.baejimeel.cakemall.domain.saleItem.SaleItem;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,20 +49,20 @@ public class User {
     private Cart cart;
 
     // 구매자의 주문
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> userOrder = new ArrayList<>();
-//
-//    // 구매자의 주문상품들
-//    @OneToMany(mappedBy = "user")
-//    private List<OrderItem> userOrderItem = new ArrayList<>();
-//
-//    // 판매자의 판매상품들
-//    @OneToMany(mappedBy = "seller")
-//    private List<SaleItem> sellerSaleItem = new ArrayList<>();
-//
-//    // 판매자의 판매
-//    @OneToMany(mappedBy = "seller")
-//    private List<Sale> sellerSale;
+    @OneToMany(mappedBy = "user")
+    private List<Order> userOrder = new ArrayList<>();
+
+    // 구매자의 주문상품들
+    @OneToMany(mappedBy = "user")
+    private List<OrderItem> userOrderItem = new ArrayList<>();
+
+    // 판매자의 판매상품들
+    @OneToMany(mappedBy = "seller")
+    private List<SaleItem> sellerSaleItem = new ArrayList<>();
+
+    // 판매자의 판매
+    @OneToMany(mappedBy = "seller")
+    private List<Sale> sellerSale;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate createDate; // 날짜
