@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>이벤트</title>
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">배지밀의 케익몰</a>
+    <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">배지밀의 케익몰</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/main}" sec:authorize="isAuthenticated()">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}" sec:authorize="!isAuthenticated()">Home</a></li>
+
+      </ul>
+      <form th:action="@{/signin}" sec:authorize="!isAuthenticated()">
+        <button class="btn btn-outline-dark" type="submit">
+          로그인
+        </button>
+      </form>
+      <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">
+        <button class="btn btn-outline-dark" type="submit">
+          회원가입
+        </button>
+      </form>
+
+      <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">
+        <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">
+          현재잔액 : 10000 ₩
+        </a>
+        <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">
+          <i class="bi-cart-fill me-1"></i>
+          Cart
+          <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${user.getCart().getCount()}">0</span>
+        </a>
+        <a class="btn btn-outline-dark" th:href="@{/user/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
+          마이페이지
+        </a>
+        <a class="btn btn-outline-dark" th:href="@{/logout}">
+          로그아웃
+        </a>
+      </form>
+
+    </div>
+  </div>
+</nav>
+<script>
+  //캔버스 세팅
+  let canvas;
+  //이미지 그리는 거 도와주는 변수
+  let ctx;
+  canvas = document.createElement("canvas")
+  ctx = canvas.getContext("2d")
+  canvas.width = 400;
+  canvas.height = 700;
+  document.body.appendChild(canvas);
+
+  let backgroundImage,spaceshipImage,bulletImage,enemyImage,gameOverImage;
+  let gameOver = false;
+
+  let spaceshipX = canvas.width/2-32;
+  let spaceshipY = canvas.height-64;
+  let score = 0;
+  let bulletList = [];
+  function Bullet() {
+    this.x = 0;
+    this.y = 0;
+    this.init = function () {
+      this.x = spaceshipX+20;
+      this.y = spaceshipY;
+      this.alive = true;
+
+      bulletList.push(this);
+    };
+    this.update = function (){
+      this.y -= 7;
+    };
+
+    this.checkHit = function (){
+      for (let i = 0; i<enemyList.length; i++){
+        if (this.y <= enemyList[i].y &&
+                this.x+8 >= enemyList[i].x &&
+                this.x <= enemyList[i].x+20){
+          score++;
+          this.alive = false;
+          enemyList.splice(i,1);
+        }
+      }
+    }
+  }
+
+  function generateRandomValue(min, max) {
+    let randomNum = Math.floor(Math.random()*(max-min+1))+min;
+    return randomNum;
+  }
+
+  let enemyList = [];
+  function Enemy() {
+    this.x = 0;
+    this.y = 0;
+    this.init = function (){
+      this.y = 0;
+      this.x = generateRandomValue(10, canvas.width-42);
+      enemyList.push(this);
+    };
+    this.update = function (){
+      this.y += 1.5;
+
+      if (this.y >= canvas.height-32){
+        gameOver = true;
+        console.log("gameover")
+      }
+    }
+  }
+
+  function loadImage(){
+    backgroundImage = new Image();
+    backgroundImage.src = "/images/background.jpg";
+
+    spaceshipImage = new Image();
+    spaceshipImage.src = "/images/spaceship.png";
+
+    bulletImage = new Image();
+    bulletImage.src = "/images/bullet.png";
+
+    enemyImage = new Image();
+    enemyImage.src = "/images/enemy.png";
+
+    gameOverImage = new Image();
+    gameOverImage.src = "/images/gameOver.jpg";
+  }
+
+  let keysDown = {};
+  function setupKeyboardListener() {
+    document.addEventListener("keydown", function(event){
+      keysDown[event.key] = true;
+      console.log("??", keysDown);
+    });
+
+    document.addEventListener("keyup", function (event){
+      delete keysDown[event.key];
+
+      if (event.keyCode == 32){
+        createBullet();
+      }
+    });
+  }
+
+  function createBullet() {
+    console.log("bullet")
+    let b = new Bullet();
+    b.init();
+  }
+
+  function createEnemy() {
+    const interval = setInterval(function (){
+      let e = new Enemy();
+      e.init();
+    }, 1500)
+  }
+
+  function update() {
+    if ("ArrowRight" in keysDown){
+      spaceshipX += 2;
+    }
+    if ("ArrowLeft" in keysDown){
+      spaceshipX -= 2;
+    }
+    if (spaceshipX <= 0 ){
+      spaceshipX = 0;
+    }
+    if (spaceshipX >= canvas.width-64){
+      spaceshipX = canvas.width-64;
+    }
+
+    for(let i =0; i<bulletList.length; i++){
+      if (bulletList[i].alive) {
+        bulletList[i].update();
+        bulletList[i].checkHit();
+      }
+    }
+
+    for (let i =0; i<enemyList.length; i++){
+      enemyList[i].update();
+    }
+  }
+
+  //그려주기
+  function render() {
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(spaceshipImage, spaceshipX, spaceshipY);
+    ctx.fillText(`Score:${score}`, 10, 25);
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial"
+
+    for (let i =0; i<bulletList.length; i++){
+      if (bulletList[i].alive) {
+        ctx.drawImage(bulletImage, bulletList[i].x, bulletList[i].y);
+      }
+    }
+
+    for (let i =0; i<enemyList.length; i++){
+      ctx.drawImage(enemyImage, enemyList[i].x, enemyList[i].y);
+    }
+  }
+
+  function main() {
+    if (gameOver == false) {
+      update();
+      render();
+      requestAnimationFrame(main);
+    }else{
+      ctx.drawImage(gameOverImage,10,100,380,380);
+    }
+  }
+
+  loadImage();
+  setupKeyboardListener();
+  createEnemy();
+  main();
+</script>
+
+<!--<script src="../static/js/eventGame.js"></script>-->
+<h2>최고 Score 인증 시 할인 쿠폰 20% 증정해드립니다. - baejimeel@naver.com<h2/>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
+
+<!-- Footer-->
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <p class="mb-1">&copy; 배지밀 - 케익몰 프로젝트</p>
+</footer>
+</body>
+</html>
