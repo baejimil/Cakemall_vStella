@@ -1,4 +1,4 @@
-## 케이크 판매 사이트 * 케익몰 프로젝트
+## 케이크 판매 사이트 - 케익몰 프로젝트
 
 # 📚프로젝트 설명
 
@@ -30,8 +30,34 @@
 <br>
 
 # 📝DB 설계
+* User
+* Item
+* Cart
+* CartItem
+* Order
+* OrderItem
+* Sale
+* SaleItem
+<br>
 
+# 🔥구현 기능
+* Entity 설계 ( User, Item, Cart, CartItem, Order, OrderItem, Sale, SaleItem)
+* 상품 CRUD 기능 구현
+* 상품 CRUD 관련 html 구현
+* 상품 리스트 검색 기능 구현
+* 상품 리스트 페이징 처리
+* 구매자, 판매자 페이지 html 구현
+* 장바구니 기능 구현
+* 장바구니 페이지 html
+* 회원정보수정 기능 구현
+* 장바구니 상품 주문 기능
+* 상품 관리 페이지, 판매내역 페이지 html
+* 상품 상세 페이지 렌더링
+* 개별 상품 구매 기능 추가
+* 주문 취소 기능
+* 충전 API 추가
+<br>
 
-
+# :bug:
 [MySQL] Field '칼럼' doesn't have a default value 에러 : 
 해당 칼럼 NOT NULL 에서 NULL로 변경해 해결
