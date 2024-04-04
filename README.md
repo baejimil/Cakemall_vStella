@@ -1,6 +1,6 @@
-##케이크 판매 사이트 - 케익몰 프로젝트
+## 케이크 판매 사이트 - 케익몰 프로젝트
 
-#📚프로젝트 설명
+# 📚프로젝트 설명
 <br>
 - 스프링부트를 이용하여 만든 프로젝트입니다.
 - ROLE을 ROLE_SELLER 와 ROLE_USER 로 구분하였습니다.
@@ -9,7 +9,7 @@
 - 구매자
   - 구매자 페이지, 장바구니, 상품 주문 및 취소, 주문내역 조회, 금액 충전
 
-#🔧개발 환경
+# 🔧개발 환경
 <br>
 - 운영체제 : Mac OS
 - 통합개발환경(IDE) : IntelliJ
@@ -19,7 +19,7 @@
 - 관리 툴 : Github
 <br>
 
-#💻Dependencies
+# 💻Dependencies
 - SpringBoot DevTools
 - Lombok
 - MySQL Drivers
@@ -28,7 +28,7 @@
 - Thymeleaf
 <br>
 
-#📝DB 설계
+# 📝DB 설계
 
 
 
