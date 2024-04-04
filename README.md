@@ -38,6 +38,8 @@
 * OrderItem
 * Sale
 * SaleItem
+![케익몰 ER다이어그램](https://github.com/baejimil/Cakemall_vStella/assets/68216569/40f29cd8-22c6-42d7-a64e-c2647893c755)
+
 <br>
 
 # 🔥구현 기능
@@ -56,8 +58,13 @@
 * 개별 상품 구매 기능 추가
 * 주문 취소 기능
 * 충전 API 추가
+* Event 페이지 추가하여 페이지 내 게임을 통한 쿠폰 증정 구현 ( 구매자 전용 )
 <br>
 
-# :bug:
-[MySQL] Field '칼럼' doesn't have a default value 에러 : 
-해당 칼럼 NOT NULL 에서 NULL로 변경해 해결
+# :bug:오류 해결 / 알아간 것
+* [MySQL] Field '칼럼' doesn't have a default value 에러 : 해당 칼럼 NOT NULL 에서 NULL로 변경해 해결.
+* 구매자 마이페이지에서 OO님 환영합니다. 배너 클릭 시 판매자 페이지 나오는 오류 해결.
+* if문 내 isNaN -> Number.isNaN
+* alter table cart_item add constraint cart_item___fk foreign key (item_id) references ??? (id); -> domain내 Item의 PRIMARY키가 설정되어 있지 않아서 설정 후 해결.
++ SecurityConfig에서 페이지 마다 권한 설정 줄 수 있지만, html파일에서 sec:authorize로 권한을 나눌 수 있다.
++ Thymeleaf th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" 에서 여러 개의 매개변수 넣을 때 {id}(id=${user.id})/{itemId}(itemId=${item.id})처럼 각각 하는 것이 아닌 마지막에 해당하는 곳에 한번에 부여.
