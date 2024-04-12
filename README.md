@@ -39,7 +39,7 @@
 * Sale
 * SaleItem
 ![케익몰 ER다이어그램](https://github.com/baejimil/Cakemall_vStella/assets/68216569/40f29cd8-22c6-42d7-a64e-c2647893c755)
-
+/Users/abc/Downloads/케익몰 ER다이어그램2.png
 <br>
 
 # 🔥구현 기능
